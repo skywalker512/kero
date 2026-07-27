@@ -101,7 +101,7 @@ struct SettingsView: View {
                 // fallback face.
                 VStack(alignment: .leading, spacing: 6) {
                     Text("kero ❯ echo \"the quick brown fox\" 0O 1lI")
-                    Text("漢字 · かな · 한글 — 你好，世界")
+                    Text("中文回落预览 — 你好，世界")
                     Text("\u{E0A0} main \u{E0B0} ~/dev/kero \u{E711} \u{F024B} \u{F0A7D}")
                     Text("bold — permission denied (os error 13)")
                         .bold()
