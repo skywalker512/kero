@@ -66,7 +66,7 @@ struct SettingsView: View {
                         Text(family).tag(family)
                     }
                 }
-                Text("Choose a fallback font for Chinese, Japanese, and Korean text. Automatic lets macOS select one; choose PingFang SC for consistent Simplified Chinese glyphs.")
+                Text("Choose a fallback font for Chinese, Japanese, and Korean text. Automatic lets macOS select one.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
 
