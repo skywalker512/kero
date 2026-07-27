@@ -60,13 +60,13 @@ struct SettingsView: View {
                 }
 
                 Picker("CJK fallback", selection: $settings.fontFamilyCJK) {
-                    Text("System (CoreText)").tag("")
+                    Text("Automatic (macOS)").tag("")
                     Divider()
                     ForEach(cjkFamilies, id: \.self) { family in
                         Text(family).tag(family)
                     }
                 }
-                Text("Used for Chinese and other glyphs missing from the primary font — same as a second font-family in Ghostty. Pick PingFang SC for predictable Simplified Chinese.")
+                Text("Choose a fallback font for Chinese, Japanese, and Korean text. Automatic lets macOS select one; choose PingFang SC for consistent Simplified Chinese glyphs.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
 
