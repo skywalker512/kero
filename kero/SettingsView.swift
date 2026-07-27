@@ -97,12 +97,13 @@ struct SettingsView: View {
             }
 
             Section("Preview") {
-                // Exercises regular/bold, CJK fallback, and Nerd Font icons.
+                // Regular / multi-script CJK / Nerd icons / bold — enough to
+                // judge family, CJK fallback, and stroke weight at a glance.
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("kero ❯ echo \"the quick brown fox\" 0O 1lI")
-                    Text("中文回落预览 — 你好，世界")
+                    Text("kero ❯ echo \"Il1| O0 — still sharp?\"")
+                    Text("漢字 · かな · 한글 — 字重一眼就认出")
                     Text("\u{E0A0} main \u{E0B0} ~/dev/kero \u{E711} \u{F024B} \u{F0A7D}")
-                    Text("bold — 加粗中文 permission denied")
+                    Text("fatal: 找不到路径「快乐」— no such file")
                         .bold()
                 }
                 .font(Font(previewFont))
