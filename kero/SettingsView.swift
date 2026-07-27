@@ -14,6 +14,8 @@ struct SettingsView: View {
 
     /// Installed fixed-pitch families (bundled default first).
     private let families = TerminalFont.selectableFamilies()
+    /// Families that cover Han glyphs, preferred CJK faces first.
+    private let cjkFamilies = TerminalFont.cjkFallbackFamilies()
 
     var body: some View {
         CappedIdealHeight(maxHeight: 600) { form }
@@ -57,6 +59,17 @@ struct SettingsView: View {
                     }
                 }
 
+                Picker("CJK fallback", selection: $settings.fontFamilyCJK) {
+                    Text("System (CoreText)").tag("")
+                    Divider()
+                    ForEach(cjkFamilies, id: \.self) { family in
+                        Text(family).tag(family)
+                    }
+                }
+                Text("Used for Chinese and other glyphs missing from the primary font — same as a second font-family in Ghostty. Pick PingFang SC for predictable Simplified Chinese.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+
                 HStack {
                     Text("Size")
                     Slider(
@@ -84,11 +97,12 @@ struct SettingsView: View {
             }
 
             Section("Preview") {
-                // Exercises regular/bold plus Nerd Font icon fallback.
+                // Exercises regular/bold, CJK fallback, and Nerd Font icons.
                 VStack(alignment: .leading, spacing: 6) {
                     Text("kero ❯ echo \"the quick brown fox\" 0O 1lI")
+                    Text("中文回落预览 — 你好，世界")
                     Text("\u{E0A0} main \u{E0B0} ~/dev/kero \u{E711} \u{F024B} \u{F0A7D}")
-                    Text("bold — permission denied (os error 13)")
+                    Text("bold — 加粗中文 permission denied")
                         .bold()
                 }
                 .font(Font(previewFont))
@@ -128,6 +142,7 @@ struct SettingsView: View {
                         settings.resetToDefaults()
                     }
                     .disabled(settings.fontFamily.isEmpty
+                        && settings.fontFamilyCJK.isEmpty
                         && settings.fontSize == AppSettings.defaultFontSize
                         && !settings.fontThicken
                         && settings.theme == .system
@@ -143,7 +158,11 @@ struct SettingsView: View {
     }
 
     private var previewFont: NSFont {
-        TerminalFont.resolve(family: settings.fontFamily, size: CGFloat(settings.fontSize))
+        TerminalFont.resolve(
+            family: settings.fontFamily,
+            cjkFamily: settings.fontFamilyCJK,
+            size: CGFloat(settings.fontSize)
+        )
     }
 
     /// Kero's built-in Default theme first, then every bundled theme, split

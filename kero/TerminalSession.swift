@@ -255,6 +255,25 @@ final class TerminalSession: NSObject, nonisolated ObservableObject, nonisolated
             ? TerminalFont.bundledFamily : settings.fontFamily
         return TerminalConfiguration { builder in
             builder.withFontFamily(family)
+            // Ghostty accepts repeated font-family entries as a fallback list.
+            // An explicit CJK face sits ahead of the Nerd Font so Han glyphs
+            // do not depend on CoreText's ambient cascade (which can pick
+            // non-PingFang faces depending on language prefs / macOS version).
+            // font-codepoint-map pins the common CJK ranges to that face so a
+            // later cascade entry cannot steal individual codepoints.
+            if !settings.fontFamilyCJK.isEmpty {
+                let cjk = settings.fontFamilyCJK
+                builder.withCustom("font-family", cjk)
+                for range in [
+                    "U+4E00-U+9FFF",
+                    "U+3400-U+4DBF",
+                    "U+F900-U+FAFF",
+                    "U+3000-U+303F",
+                    "U+FF00-U+FFEF",
+                ] {
+                    builder.withCustom("font-codepoint-map", "\(range)=\(cjk)")
+                }
+            }
             // Keep Kero's bundled icon font as a fallback after the selected
             // primary face. Repeated font-family entries form Ghostty's list.
             builder.withCustom("font-family", "Symbols Nerd Font Mono")

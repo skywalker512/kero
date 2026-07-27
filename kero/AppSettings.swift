@@ -63,6 +63,14 @@ final class AppSettings: nonisolated ObservableObject {
         didSet { save() }
     }
 
+    /// Optional CJK (and other missing-glyph) fallback after the primary
+    /// family — the same idea as repeating `font-family` in Ghostty. Empty
+    /// leaves fallback to CoreText's system cascade, which is unpredictable
+    /// for Chinese. A concrete face such as PingFang SC keeps CJK on one font.
+    @Published var fontFamilyCJK: String {
+        didSet { save() }
+    }
+
     @Published var fontSize: Double {
         didSet { save() }
     }
@@ -98,6 +106,7 @@ final class AppSettings: nonisolated ObservableObject {
             toml["theme-light"]?.string, fallback: Theme.defaultLightThemeName
         )
         fontFamily = toml["font-family"]?.string ?? ""
+        fontFamilyCJK = toml["font-family-cjk"]?.string ?? ""
         let size = toml["font-size"]?.double ?? Self.defaultFontSize
         fontSize = Self.fontSizeRange.contains(size) ? size : Self.defaultFontSize
         fontThicken = toml["font-thicken"]?.bool ?? false
@@ -133,6 +142,7 @@ final class AppSettings: nonisolated ObservableObject {
 
     func resetFont() {
         fontFamily = ""
+        fontFamilyCJK = ""
         fontSize = Self.defaultFontSize
         fontThicken = false
     }
@@ -161,6 +171,9 @@ final class AppSettings: nonisolated ObservableObject {
         }
         if !fontFamily.isEmpty {
             lines.append("font-family = \(TOML.quote(fontFamily))")
+        }
+        if !fontFamilyCJK.isEmpty {
+            lines.append("font-family-cjk = \(TOML.quote(fontFamilyCJK))")
         }
         lines.append("font-size = \(TOML.number(fontSize))")
         if fontThicken {

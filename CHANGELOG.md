@@ -12,6 +12,8 @@ set in the Xcode project.
 
 ## [unrelease]
 
+- Settings → Font gains a CJK fallback picker (Ghostty-style second font-family), so Chinese can use PingFang SC or another face instead of CoreText’s ambient cascade
+
 ## [0.1.26]
 
 - Opening the Ctrl-Tab switcher no longer highlights whichever tab happens to be under the stationary pointer

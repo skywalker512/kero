@@ -121,11 +121,12 @@ final class TerminalManager: nonisolated ObservableObject {
         settingsObservation = Publishers.CombineLatest(
             Publishers.CombineLatest4(
                 AppSettings.shared.$fontFamily.removeDuplicates(),
+                AppSettings.shared.$fontFamilyCJK.removeDuplicates(),
                 AppSettings.shared.$fontSize.removeDuplicates(),
-                AppSettings.shared.$fontThicken.removeDuplicates(),
-                AppSettings.shared.$theme.removeDuplicates()
+                AppSettings.shared.$fontThicken.removeDuplicates()
             ),
-            Publishers.CombineLatest(
+            Publishers.CombineLatest3(
+                AppSettings.shared.$theme.removeDuplicates(),
                 AppSettings.shared.$themeDark.removeDuplicates(),
                 AppSettings.shared.$themeLight.removeDuplicates()
             )
